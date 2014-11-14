@@ -26,10 +26,16 @@ gulp.task "watch", ->
     gulp.start "bower", cb
 
   server = plugins.livereload()
-  plugins.livereload.listen()
+  plugins.livereload.listen(33568)
 
-  plugins.watch ["#{config.publicPath}/**/*.{css,js,svg,jpg,gif,png}", "#{config.publicPath}/**/*.{html,haml}"]
-    .pipe plugins.livereload()
+  # LiveReload
+  gulp.watch(["#{config.publicPath}/**/**/*.{css,js,erb,haml,html,svg,jpg,gif,png}"]).on "change", (file) ->
+    if file.path.indexOf("haml") > -1
+      setTimeout ->
+        server.changed file.path
+      , 750
+    else  
+      server.changed file.path
 
   plugins.watch "#{config.publicPath}/**/*.html", (e, cb) ->
     server.changed()

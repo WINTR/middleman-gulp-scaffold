@@ -5,6 +5,8 @@
 gulp    = require 'gulp'
 plugins = require('gulp-load-plugins')()
 config  = require "../config.coffee"
+kouto   = require "kouto-swiss"
+jeet    = require "jeet"
 
 #--------------------------------------------------------
 # Compile Stylesheets
@@ -16,6 +18,7 @@ gulp.task "stylesheets", ->
     .pipe plugins.stylus
       sourcemap:
         inline: config.development
+      use: [kouto(), jeet()]
     .pipe plugins.sourcemaps.init
       loadMaps: true
     .pipe plugins.autoprefixer()
